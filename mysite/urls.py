@@ -5,6 +5,8 @@ from django.contrib.auth import views as auth_views
 from django.conf import settings
 from django.conf.urls.static import static
 
+# raunda ?
+
 urlpatterns = [
     path('polls/', include('polls.urls')),
     path('', include('blog.urls')),

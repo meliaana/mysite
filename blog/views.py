@@ -4,6 +4,7 @@ from .models import Post, BlogComment
 from django.contrib.auth.models import User
 from .forms import AddCommentForm
 from django.urls import reverse
+from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 # < 3
@@ -26,7 +27,7 @@ class PostDitailView(DetailView):
 
 
 class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
-    success_url = '/blog/'
+    success_url = reverse_lazy('blog-home')
     success_message = "Your post has been created successfully"
     model = Post
     fields = ['title', 'content']
@@ -34,7 +35,6 @@ class PostCreateView(LoginRequiredMixin, SuccessMessageMixin, CreateView):
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
-
 
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixin, UpdateView):
     success_message = "Your post has been updated"
@@ -57,7 +57,7 @@ class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, SuccessMessageMixi
 
 class PostDeleteView (LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    success_url = '/blog/'
+    success_url = reverse_lazy('blog-home')
 
     def test_func(self):
         post = self.get_object()
